@@ -1,2 +1,8 @@
 Pravidla
-
+1    Hrá sa na šachovnici 8x8/10x10/12x12.
+2    Súperi majú na začiatku po 8/10/12 figúrok pešiakov stojacich na protiľahlých stranách v prvých dvoch radoch na čiernych políčkach.
+3    Všetky figúry sa pohybujú po diagonálach, nemôžu preskakovať figúrky vlastnej farby.
+4    Pešiaci sa pohybujú iba dopredu. Ak neberú súperovu figúru, pohybujú sa po jednom políčku. Ak berú súperovu figúru, preskočia ju a tak ju zoberú, ak môžu preskočiť aj ďalšiu súperovi figúrku, môžu preskočiť a zobrať aj tú.
+5    Keď pešiak dôjde na druhú stranu šachovnice, zmení sa na dámu.
+6    Dáma sa pohybuje dopredu aj dozadu o ľubovoľný počet polí.
+7    Vyhráva hráč, ktorý zoberie súperovi všetky figúrky. Partia končí remízou: a) ak hráč, ktorý je na ťahu, nemôže uskutočniť ťah; b) ak už teoreticky nemožno pri pozornej hre súperovi vziať žiadnu figúrku.
