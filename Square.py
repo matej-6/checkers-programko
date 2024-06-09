@@ -3,7 +3,7 @@ from Piece import Piece
 class Square:
     def __init__(self, side_length, color, x, y, row, column):
         self.side_length = side_length
-        self.color = color
+        self.color = self._originalColor = color
         self.x1 = x
         self.y1 = y
         self.x2 = x + side_length
@@ -34,7 +34,14 @@ class Square:
         else:
             return None
 
+    def set_valid_move(self, valid=True):
+        if valid:
+            self.color = (91, 133, 170)
+        else:
+            self.color = self._originalColor
+
+
     def __repr__(self):
         return f"Square at row {self.ROW} and column {self.COLUMN} with piece {self.piece}"
     def __str__(self):
-        return {'side': self.side_length, 'color': self.color, 'x1': self.x1, 'y1': self.y1, 'x2': self.x2, 'y2': self.y2, 'piece': self.piece}
+        return f"Square at row {self.ROW} and column {self.COLUMN} with piece {self.piece}"

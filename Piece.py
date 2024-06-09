@@ -19,4 +19,4 @@ class Piece:
 
 
     def __str__(self):
-        return {'color': self.color, 'x': self.x, 'y': self.y, 'king': self.king, 'player': self.player}
+        return f"Piece at {self.x}, {self.y} with color {self.color} and player {self.player}"
