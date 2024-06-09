@@ -16,6 +16,8 @@ class Piece:
         else:
             pygame.draw.circle(screen, (90, 90, 90), (self.x, self.y), 45)
         pygame.draw.circle(screen, self.color, (self.x, self.y), 40)
+        if self.king:
+            pygame.draw.circle(screen, (255, 255, 255), (self.x, self.y), 20)
 
 
     def __str__(self):

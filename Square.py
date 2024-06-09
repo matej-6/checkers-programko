@@ -23,10 +23,9 @@ class Square:
     def initiatePiece(self, color, player):
         self.piece = Piece(color, (self.x1+(self.side_length // 2)), (self.y1+(self.side_length // 2)), player)
 
-    def updatePiece(self, selected=False, king=False):
+    def updatePiece(self, selected=False):
         if(self.piece != None):
             self.piece.selected = selected
-            self.piece.king = king
 
     def getPiece(self):
         if(self.piece != None):

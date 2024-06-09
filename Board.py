@@ -212,6 +212,16 @@ class Board:
     #                     moves.append(self.squares[(square.ROW + 1) * self.COLS + (square.COLUMN + 1)])
     #     return moves
 
+    def check_if_piece_became_king(self, square):
+        if square.piece:
+            if square.piece.player == 'player1' and square.ROW == self.ROWS - 1:
+                square.piece.king = True
+                print("Player 1 became king")
+            elif square.piece.player == 'player2' and square.ROW == 0:
+                square.piece.king = True
+                print("Player 2 became king")
+
+
     def movePiece(self, selectedSquare, newSquare, jumpedItems):
         print(f"Selected square: {selectedSquare}")
         print(f"New square: {newSquare}")
@@ -225,6 +235,8 @@ class Board:
                 jumpedItem.piece = None
                 self.changedSquares.append(jumpedItem)
 
+
+
         if newSquare.piece == None and selectedSquare.piece != None:
             selectedSquare.piece.x = (newSquare.x1 + (newSquare.side_length // 2))
             selectedSquare.piece.y = (newSquare.y1 + (newSquare.side_length // 2))
@@ -234,6 +246,7 @@ class Board:
             self.changedSquares.append(newSquare)
             newSquare.updatePiece(selected=False)
             self.turn = 'player1' if self.turn == 'player2' else 'player2'
+            self.check_if_piece_became_king(newSquare)
             return True
         return False
 
