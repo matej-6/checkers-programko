@@ -12,7 +12,7 @@ FPS = 60
 def main():
     running = True
     clock = pygame.time.Clock()
-    board = Board(8, 8)
+    board = Board(12, 12, 12)
     SCREEN.fill((0, 0, 0))
 
     while running:

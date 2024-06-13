@@ -3,12 +3,12 @@ from Square import Square
 
 
 class Board:
-    def __init__(self, cols, rows):
+    def __init__(self, cols=8, rows=8, pocet_figuriek=8):
         self.COLS = cols
         self.ROWS = rows
         self.squares = []
         self.turn = 'player2'
-        self.player1_left, self.player2_left = 12, 12 # treba zmenit potom ked sa vyberie difficulty to trocha pomenit
+        self.player1_left, self.player2_left = pocet_figuriek, pocet_figuriek # treba zmenit potom ked sa vyberie difficulty to trocha pomenit
         self.changedSquares = []
         self._selected = None
         self.initiateSquares()
@@ -19,11 +19,11 @@ class Board:
         for i in range(self.COLS):
             for j in range(self.ROWS):
                 if (i+j) % 2 == 0:
-                    new_square = Square(100, (235, 245, 238), i*100, j*100, j, i)
+                    new_square = Square(800/self.COLS, (235, 245, 238), i*(800/self.COLS), j*(800/self.ROWS), j, i)
                     self.squares.append(new_square)
                     self.changedSquares.append(new_square)
                 else:
-                    new_square = Square(100, (139, 120, 109), i*100, j*100, j, i)
+                    new_square = Square(800/self.ROWS, (139, 120, 109), i*(800/self.COLS), j*(800/self.ROWS), j, i)
                     self.squares.append(new_square)
                     self.changedSquares.append(new_square)
 
@@ -33,13 +33,13 @@ class Board:
         for i in range(0, 3):
             for j in range(0, self.COLS):
                 if self.squares[j*self.COLS+i].color == (139, 120, 109):
-                    self.squares[j*self.COLS+i].initiatePiece((235, 245, 238), 'player1')
+                    self.squares[j*self.COLS+i].initiatePiece((235, 245, 238), 'player1', 350 / self.ROWS)
                     # self.changedSquares.append(self.squares[j*self.COLS+i])
 
-        for i in range(5, 8):
+        for i in range(self.ROWS - 3, self.ROWS):
             for j in range(0, self.COLS):
                 if self.squares[j*self.COLS+i].color == (139, 120, 109):
-                    self.squares[j*self.COLS+i].initiatePiece((100, 120, 109), 'player2')
+                    self.squares[j*self.COLS+i].initiatePiece((100, 120, 109), 'player2', 350 / self.ROWS)
                     # self.changedSquares.append(self.squares[j*self.COLS+i])
 
         self.changedSquares = self.squares
@@ -136,81 +136,7 @@ class Board:
                 moves.update(self.traverse_top_right(top_right_square, jumped + [top_right_square]))
 
         return moves
-    # def get_valid_moves_player1(self, square):
-    #     moves = []
-    #     # if square.piece.king:
-    #     #     moves += self.get_valid_moves_player2(square)
-    #
-    #     squareIndex = self.squares.index(square)
-    #
-    #     if square.ROW < self.ROWS - 1:
-    #         if square.COLUMN > 0:
-    #             if self.squares[squareIndex - self.COLS + 1].piece == None:
-    #                 moves.append(self.squares[squareIndex - self.COLS + 1])
-    #         if square.COLUMN < self.COLS - 1:
-    #             if self.squares[squareIndex + self.COLS + 1].piece == None:
-    #                 moves.append(self.squares[squareIndex + self.COLS + 1])
-    #
-    #     return moves
-    #
-    # def get_valid_moves_player2(self, square):
-    #     moves = []
-    #     currentSquareIndex = self.squares.index(square)
-    #     directions = [currentSquareIndex - self.COLS - 1, currentSquareIndex + self.COLS - 1]
-    #
-    #     if square.piece.king:
-    #         directions += [currentSquareIndex - self.COLS + 1, currentSquareIndex + self.COLS + 1]
-    #
-    #     for direction in directions:
-    #         self._explore_moves(direction, square, currentSquareIndex, moves)
-    #
-    #     return moves
-    #
-    # def _explore_moves(self, direction, square, currentSquareIndex, moves, jumped=[]):
-    #     if 0 <= direction < len(self.squares):
-    #         next_square = self.squares[direction]
-    #         if next_square.piece is None:
-    #             moves.append(next_square)
-    #         elif next_square.piece.player != square.piece.player:
-    #             direction_row_diff = direction // self.COLS - currentSquareIndex // self.COLS
-    #             direction_col_diff = direction % self.COLS - currentSquareIndex % self.COLS
-    #             jump_square_index = direction + direction_row_diff * self.COLS + direction_col_diff
-    #
-    #             if 0 <= jump_square_index < len(self.squares) and abs(
-    #                     jump_square_index // self.COLS - direction // self.COLS) == 1 and abs(
-    #                     jump_square_index % self.COLS - direction % self.COLS) == 1:
-    #                 jump_square = self.squares[jump_square_index]
-    #                 if jump_square.piece is None and jump_square not in jumped:
-    #                     moves.append(jump_square)
-    #                     self._explore_moves(jump_square_index, jump_square, direction, moves, jumped + [next_square])
 
-    # def get_valid_moves_player1(self, square):
-    #     moves = []
-    #     if square.piece.king:
-    #         moves += self.get_valid_moves_player2(square)
-    #     else:
-    #         if square.ROW - 1 >= 0:
-    #             if square.COLUMN - 1 >= 0:
-    #                 if self.squares[(square.ROW - 1) * self.COLS + (square.COLUMN - 1)].piece == None:
-    #                     moves.append(self.squares[(square.ROW - 1) * self.COLS + (square.COLUMN - 1)])
-    #             if square.COLUMN + 1 < self.COLS:
-    #                 if self.squares[(square.ROW - 1) * self.COLS + (square.COLUMN + 1)].piece == None:
-    #                     moves.append(self.squares[(square.ROW - 1) * self.COLS + (square.COLUMN + 1)])
-    #     return moves
-
-    # def get_valid_moves_player2(self, square):
-    #     moves = []
-    #     if square.piece.king:
-    #         moves += self.get_valid_moves_player1(square)
-    #     else:
-    #         if square.ROW + 1 < self.ROWS:
-    #             if square.COLUMN - 1 >= 0:
-    #                 if self.squares[(square.ROW + 1) * self.COLS + (square.COLUMN - 1)].piece == None:
-    #                     moves.append(self.squares[(square.ROW + 1) * self.COLS + (square.COLUMN - 1)])
-    #             if square.COLUMN + 1 < self.COLS:
-    #                 if self.squares[(square.ROW + 1) * self.COLS + (square.COLUMN + 1)].piece == None:
-    #                     moves.append(self.squares[(square.ROW + 1) * self.COLS + (square.COLUMN + 1)])
-    #     return moves
 
     def check_if_piece_became_king(self, square):
         if square.piece:

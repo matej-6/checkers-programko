@@ -20,8 +20,8 @@ class Square:
     def getCoordinates(self):
         return [self.x1, self.y1, self.x2, self.y2]
 
-    def initiatePiece(self, color, player):
-        self.piece = Piece(color, (self.x1+(self.side_length // 2)), (self.y1+(self.side_length // 2)), player)
+    def initiatePiece(self, color, player, radius):
+        self.piece = Piece(color, (self.x1+(self.side_length // 2)), (self.y1+(self.side_length // 2)), player, radius)
 
     def updatePiece(self, selected=False):
         if(self.piece != None):
