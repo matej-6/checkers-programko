@@ -1,8 +1,7 @@
 import pygame
 
-
 class Piece:
-    def __init__(self, color, x, y, player, radius):
+    def __init__(self, color, x, y, player, radius, image, king_image):
         self.color = color
         self.x = x
         self.y = y
@@ -10,16 +9,16 @@ class Piece:
         self.player = player
         self.selected = False
         self.radius = radius
+        self.image = image
+        self.king_image = king_image
 
     def draw(self, screen):
+        piece_image = self.king_image if self.king else self.image
+        rect = piece_image.get_rect(center=(self.x, self.y))
+        screen.blit(piece_image, rect)
         if self.selected:
-            pygame.draw.circle(screen, (255, 0, 0), (self.x, self.y), self.radius)
-        else:
-            pygame.draw.circle(screen, (90, 90, 90), (self.x, self.y), self.radius)
-        pygame.draw.circle(screen, self.color, (self.x, self.y), self.radius * 0.9)
-        if self.king:
-            pygame.draw.circle(screen, (255, 255, 255), (self.x, self.y), self.radius // 2)
-
+            pygame.draw.circle(screen, (255, 0, 0), (self.x, self.y), self.radius, 3)  # Red border for selected piece
 
     def __str__(self):
         return f"Piece at {self.x}, {self.y} with color {self.color} and player {self.player}"
+

@@ -1,5 +1,6 @@
 import pygame
 from Piece import Piece
+
 class Square:
     def __init__(self, side_length, color, x, y, row, column):
         self.side_length = side_length
@@ -11,24 +12,23 @@ class Square:
         self.piece = None
         self.ROW, self.COLUMN = row, column
 
-
     def draw(self, screen):
-        pygame.draw.rect(screen, self.color, (self.x1, self.y1, self.x2, self.y2))
-        if(self.piece != None):
+        pygame.draw.rect(screen, self.color, (self.x1, self.y1, self.x2 - self.x1, self.y2 - self.y1))
+        if self.piece is not None:
             self.piece.draw(screen)
 
     def getCoordinates(self):
         return [self.x1, self.y1, self.x2, self.y2]
 
-    def initiatePiece(self, color, player, radius):
-        self.piece = Piece(color, (self.x1+(self.side_length // 2)), (self.y1+(self.side_length // 2)), player, radius)
+    def initiatePiece(self, color, player, radius, image, king_image):
+        self.piece = Piece(color, (self.x1 + (self.side_length // 2)), (self.y1 + (self.side_length // 2)), player, radius, image, king_image)
 
     def updatePiece(self, selected=False):
-        if(self.piece != None):
+        if self.piece is not None:
             self.piece.selected = selected
 
     def getPiece(self):
-        if(self.piece != None):
+        if self.piece is not None:
             return self.piece
         else:
             return None
@@ -39,8 +39,9 @@ class Square:
         else:
             self.color = self._originalColor
 
-
     def __repr__(self):
         return f"Square at row {self.ROW} and column {self.COLUMN} with piece {self.piece}"
+
     def __str__(self):
         return f"Square at row {self.ROW} and column {self.COLUMN} with piece {self.piece}"
+

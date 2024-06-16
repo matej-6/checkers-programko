@@ -1,47 +1,42 @@
 import pygame
 from Square import Square
 
-
 class Board:
     def __init__(self, cols=8, rows=8, pocet_figuriek=8):
         self.COLS = cols
         self.ROWS = rows
         self.squares = []
         self.turn = 'player2'
-        self.player1_left, self.player2_left = pocet_figuriek, pocet_figuriek # treba zmenit potom ked sa vyberie difficulty to trocha pomenit
+        self.player1_left, self.player2_left = pocet_figuriek, pocet_figuriek
         self.changedSquares = []
         self._selected = None
+        self.player1_piece_image = pygame.transform.scale(pygame.image.load('assets/images/whitePiece.png'), (int(650 / self.ROWS), int(650 / self.ROWS)))
+        self.player2_piece_image = pygame.transform.scale(pygame.image.load('assets/images/blackPiece.png'), (int(650 / self.ROWS), int(650 / self.ROWS)))
+        self.player1_king_image = pygame.transform.scale(pygame.image.load('assets/images/kingWhitePiece.png'), (int(650 / self.ROWS), int(650 / self.ROWS)))
+        self.player2_king_image = pygame.transform.scale(pygame.image.load('assets/images/kingBlackPiece.png'), (int(650 / self.ROWS), int(650 / self.ROWS)))
         self.initiateSquares()
         self.initiatePieces()
-
 
     def initiateSquares(self):
         for i in range(self.COLS):
             for j in range(self.ROWS):
-                if (i+j) % 2 == 0:
-                    new_square = Square(800/self.COLS, (235, 245, 238), i*(800/self.COLS), j*(800/self.ROWS), j, i)
-                    self.squares.append(new_square)
-                    self.changedSquares.append(new_square)
-                else:
-                    new_square = Square(800/self.ROWS, (139, 120, 109), i*(800/self.COLS), j*(800/self.ROWS), j, i)
-                    self.squares.append(new_square)
-                    self.changedSquares.append(new_square)
-
-        print(self.squares)
+                color = (235, 245, 238) if (i + j) % 2 == 0 else (139, 120, 109)
+                new_square = Square(800 / self.COLS, color, i * (800 / self.COLS), j * (800 / self.ROWS), j, i)
+                self.squares.append(new_square)
+                self.changedSquares.append(new_square)
 
     def initiatePieces(self):
+        radius = 350 / self.ROWS
         for i in range(0, 3):
             for j in range(0, self.COLS):
-                if self.squares[j*self.COLS+i].color == (139, 120, 109):
-                    self.squares[j*self.COLS+i].initiatePiece((235, 245, 238), 'player1', 350 / self.ROWS)
-                    # self.changedSquares.append(self.squares[j*self.COLS+i])
-
+                square = self.squares[j * self.COLS + i]
+                if square.color == (139, 120, 109):
+                    square.initiatePiece((235, 245, 238), 'player1', radius, self.player1_piece_image, self.player1_king_image)
         for i in range(self.ROWS - 3, self.ROWS):
             for j in range(0, self.COLS):
-                if self.squares[j*self.COLS+i].color == (139, 120, 109):
-                    self.squares[j*self.COLS+i].initiatePiece((100, 120, 109), 'player2', 350 / self.ROWS)
-                    # self.changedSquares.append(self.squares[j*self.COLS+i])
-
+                square = self.squares[j * self.COLS + i]
+                if square.color == (139, 120, 109):
+                    square.initiatePiece((100, 120, 109), 'player2', radius, self.player2_piece_image, self.player2_king_image)
         self.changedSquares = self.squares
 
 
