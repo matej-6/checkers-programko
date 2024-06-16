@@ -144,23 +144,18 @@ class Board:
 
 
     def movePiece(self, selectedSquare, newSquare, jumpedItems):
-        print(f"Selected square: {selectedSquare}")
-        print(f"New square: {newSquare}")
-        print(f"Jumped items: {jumpedItems}")
         if jumpedItems:
             for jumpedItem in jumpedItems:
-                if jumpedItem.piece.player == 'player1':
+                if jumpedItem.piece and jumpedItem.piece.player == 'player1':
                     self.player1_left -= 1
-                else:
+                elif jumpedItem.piece and jumpedItem.piece.player == 'player2':
                     self.player2_left -= 1
                 jumpedItem.piece = None
                 self.changedSquares.append(jumpedItem)
 
-
-
-        if newSquare.piece == None and selectedSquare.piece != None:
-            selectedSquare.piece.x = (newSquare.x1 + (newSquare.side_length // 2))
-            selectedSquare.piece.y = (newSquare.y1 + (newSquare.side_length // 2))
+        if newSquare.piece is None and selectedSquare.piece is not None:
+            selectedSquare.piece.x = newSquare.x1 + (newSquare.side_length // 2)
+            selectedSquare.piece.y = newSquare.y1 + (newSquare.side_length // 2)
             newSquare.piece = selectedSquare.piece
             selectedSquare.piece = None
             self.changedSquares.append(selectedSquare)
@@ -202,4 +197,14 @@ class Board:
             square.draw(screen)
         self.changedSquares = []
 
+
+
+    def check_winner(self):
+        if self.player1_left <= 0:
+            return 'player2'
+        elif self.player2_left <= 0:
+            return 'player1'
+        return None
+    
+    
 
