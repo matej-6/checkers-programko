@@ -71,7 +71,7 @@ class Game:
         game_mode_buttons = [button_2p, button_ai]
 
       
-        start_button = Button((self.WIDTH // 2, 700), 'START', get_font(80), 'white', '#4CAF50', '#343a40', '#ffffff')  # White border
+        start_button = Button((self.WIDTH // 2, 700), 'START', get_font(80), 'white', '#4CAF50', '#343a40', '#ffffff')  
 
         while self.running:
             self.SCREEN.fill('#212529')
@@ -166,12 +166,12 @@ class Game:
         WIN_TEXT_RECT = WIN_TEXT.get_rect(center=(self.WIDTH // 2, 200))
         self.SCREEN.blit(WIN_TEXT, WIN_TEXT_RECT)
 
-        SCORE_TEXT = get_font(30).render(f'Score: Player 1 - {self.board.player1_left} | Player 2 - {self.board.player2_left}', True, (255, 255, 255))
+        SCORE_TEXT = get_font(30).render(f'Score: Player 1 - {self.board.player1_left + 4} | Player 2 - {self.board.player2_left + 4}', True, (255, 255, 255))
         SCORE_TEXT_RECT = SCORE_TEXT.get_rect(center=(self.WIDTH // 2, 300))
         self.SCREEN.blit(SCORE_TEXT, SCORE_TEXT_RECT)
 
         self.restart_button = Button((self.WIDTH // 2, 400), 'RESTART', get_font(50), 'white', '#4CAF50', '#343a40', '#ffffff')
-        self.main_menu_button = Button((self.WIDTH // 2, 500), 'MAIN MENU', get_font(50), 'white', '#4CAF50', '#343a40', '#ffffff')
+        self.main_menu_button = Button((self.WIDTH // 2, 500), 'MAIN MENU', get_font(50), 'white', '#f72585', '#343a40', '#ffffff')
 
         self.restart_button.update(self.SCREEN)
         self.main_menu_button.update(self.SCREEN)

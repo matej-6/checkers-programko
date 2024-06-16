@@ -200,9 +200,9 @@ class Board:
 
 
     def check_winner(self):
-        if self.player1_left <= 0:
+        if self.player1_left <= -5:
             return 'player2'
-        elif self.player2_left <= 0:
+        elif self.player2_left <= -5:
             return 'player1'
         return None
     
