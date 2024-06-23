@@ -67,10 +67,8 @@ class Game:
         MODE_TEXT_RECT = MODE_TEXT.get_rect(center=(self.WIDTH // 2, 450))
         button_2p = Button((350, 550), '2P', get_font(60), 'white', '#f72585', '#343a40', '#ffffff')  
         button_ai = Button((450, 550), 'AI', get_font(60), 'white', '#f72585', '#343a40', '#ffffff')  
-
         game_mode_buttons = [button_2p, button_ai]
 
-      
         start_button = Button((self.WIDTH // 2, 700), 'START', get_font(80), 'white', '#4CAF50', '#343a40', '#ffffff')  
 
         while self.running:
@@ -128,7 +126,7 @@ class Game:
             self.clock.tick(FPS)
 
     def play(self, board_size, game_mode):
-        self.board = Board(board_size, board_size, board_size)
+        self.board = Board(board_size, board_size)
         self.running = True
         self.end_game = False
         self.winner = None
@@ -166,7 +164,7 @@ class Game:
         WIN_TEXT_RECT = WIN_TEXT.get_rect(center=(self.WIDTH // 2, 200))
         self.SCREEN.blit(WIN_TEXT, WIN_TEXT_RECT)
 
-        SCORE_TEXT = get_font(30).render(f'Score: Player 1 - {self.board.player1_left + 4} | Player 2 - {self.board.player2_left + 4}', True, (255, 255, 255))
+        SCORE_TEXT = get_font(30).render(f'Score: Player 1 - {self.board.player1_left} | Player 2 - {self.board.player2_left}', True, (255, 255, 255))
         SCORE_TEXT_RECT = SCORE_TEXT.get_rect(center=(self.WIDTH // 2, 300))
         self.SCREEN.blit(SCORE_TEXT, SCORE_TEXT_RECT)
 

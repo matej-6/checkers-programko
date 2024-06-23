@@ -2,12 +2,12 @@ import pygame
 from Square import Square
 
 class Board:
-    def __init__(self, cols=8, rows=8, pocet_figuriek=8):
+    def __init__(self, cols=8, rows=8):
         self.COLS = cols
         self.ROWS = rows
         self.squares = []
         self.turn = 'player2'
-        self.player1_left, self.player2_left = pocet_figuriek, pocet_figuriek
+        self.player1_left = self.player2_left = self.calculate_pocet_figuriek(cols)
         self.changedSquares = []
         self._selected = None
         self.player1_piece_image = pygame.transform.scale(pygame.image.load('assets/images/whitePiece.png'), (int(650 / self.ROWS), int(650 / self.ROWS)))
@@ -16,6 +16,16 @@ class Board:
         self.player2_king_image = pygame.transform.scale(pygame.image.load('assets/images/kingBlackPiece.png'), (int(650 / self.ROWS), int(650 / self.ROWS)))
         self.initiateSquares()
         self.initiatePieces()
+
+    def calculate_pocet_figuriek(self, cols):
+        if cols == 8:
+            return 12
+        elif cols == 10:
+            return 15
+        elif cols == 12:
+            return 18
+        else:
+            raise ValueError("Unsupported board size")
 
     def initiateSquares(self):
         for i in range(self.COLS):
@@ -27,16 +37,18 @@ class Board:
 
     def initiatePieces(self):
         radius = 350 / self.ROWS
-        for i in range(0, 3):
-            for j in range(0, self.COLS):
+        for i in range(3):
+            for j in range(self.COLS):
                 square = self.squares[j * self.COLS + i]
                 if square.color == (139, 120, 109):
                     square.initiatePiece((235, 245, 238), 'player1', radius, self.player1_piece_image, self.player1_king_image)
+
         for i in range(self.ROWS - 3, self.ROWS):
-            for j in range(0, self.COLS):
+            for j in range(self.COLS):
                 square = self.squares[j * self.COLS + i]
                 if square.color == (139, 120, 109):
                     square.initiatePiece((100, 120, 109), 'player2', radius, self.player2_piece_image, self.player2_king_image)
+
         self.changedSquares = self.squares
 
 
@@ -57,6 +69,17 @@ class Board:
             if square.x1 <= pos[0] <= square.x2 and square.y1 <= pos[1] <= square.y2:
                 return square
         return None
+
+    def get_valid_moves(self, square):
+        moves = {}
+        if square.piece:
+            if square.piece.player == 'player1' or square.piece.king:
+                moves.update(self.traverse_bottom_left(square))
+                moves.update(self.traverse_bottom_right(square))
+            if square.piece.player == 'player2' or square.piece.king:
+                moves.update(self.traverse_top_left(square))
+                moves.update(self.traverse_top_right(square))
+        return moves
 
     def get_valid_moves(self, square):
         moves = {}
@@ -133,6 +156,7 @@ class Board:
         return moves
 
 
+
     def check_if_piece_became_king(self, square):
         if square.piece:
             if square.piece.player == 'player1' and square.ROW == self.ROWS - 1:
@@ -148,8 +172,10 @@ class Board:
             for jumpedItem in jumpedItems:
                 if jumpedItem.piece and jumpedItem.piece.player == 'player1':
                     self.player1_left -= 1
+                    print (self.player1_left)
                 elif jumpedItem.piece and jumpedItem.piece.player == 'player2':
                     self.player2_left -= 1
+                    print(self.player2_left)
                 jumpedItem.piece = None
                 self.changedSquares.append(jumpedItem)
 
@@ -200,9 +226,9 @@ class Board:
 
 
     def check_winner(self):
-        if self.player1_left <= -5:
+        if self.player1_left <= 0:
             return 'player2'
-        elif self.player2_left <= -5:
+        elif self.player2_left <= 0:
             return 'player1'
         return None
     
