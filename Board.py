@@ -1,4 +1,5 @@
 import random
+import time
 
 import pygame
 from Square import Square
@@ -86,14 +87,39 @@ class Board:
 
     def ai_move(self):
         valid_moves = self.get_all_valid_moves()
-        if valid_moves:
-            source_square, moves_dict = random.choice(list(valid_moves.items()))
-            if moves_dict:
-                destination_square = random.choice(list(moves_dict.keys()))
-                move_data = moves_dict[destination_square]
-                self.movePiece(source_square, destination_square, move_data)
+        print(valid_moves)
+        print("VALID MOVES")
 
-        self.turn = 'player2'  # Assuming 'player1' is the other player
+        if valid_moves:
+            capturing_moves = {}
+            for key, value in valid_moves.items():
+                has_captures = False
+                for possible_move, move_data in value.items():
+                    if move_data:
+                        if key not in capturing_moves:
+                            capturing_moves[key] = {}
+                        capturing_moves[key][possible_move] = move_data
+                        has_captures = True
+                if not has_captures:
+                    if key in capturing_moves:
+                        del capturing_moves[key]
+
+
+            if capturing_moves:
+                print("CAPTURING MOVES")
+                print(capturing_moves)
+                source_square, moves_dict = random.choice(list(capturing_moves.items()))
+                next_location = random.choice(list(moves_dict.keys()))
+                move_data = moves_dict[next_location]
+                self.movePiece(source_square, next_location, move_data)
+            else:
+                source_square, moves_dict = random.choice(list(valid_moves.items()))
+                if moves_dict:
+                    next_location = random.choice(list(moves_dict.keys()))
+                    move_data = moves_dict[next_location]
+                    self.movePiece(source_square, next_location, move_data)
+
+        self.turn = 'player2'
 
     def traverse_bottom_left(self, square, jumped=[]):
         moves = {}

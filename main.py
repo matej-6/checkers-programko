@@ -1,5 +1,6 @@
 import pygame
-from Board import Board  
+from Board import Board
+import time
 
 BOARD_SIZES = [8, 10, 12]
 SCREEN_SIZE = (800, 800)
@@ -147,6 +148,7 @@ class Game:
                         self.board.setSelected(square)
             if self.board.aiPlayer and self.board.turn == 'player1' and not self.end_game:
                 self.board.ai_move()
+
 
             self.SCREEN.fill((0, 0, 0))
             if not self.end_game:
