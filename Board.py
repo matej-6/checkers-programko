@@ -109,31 +109,12 @@ class Board:
 
     def ai_move(self):
         valid_moves = self.get_all_valid_moves()
-        print(valid_moves)
-
-
         if valid_moves:
-            # Select a random source square with a valid move
             source_square, moves_dict = random.choice(list(valid_moves.items()))
-
-            print('Selected source square:', source_square)
-
-            # Select a random destination square from the possible moves
             if moves_dict:
                 destination_square = random.choice(list(moves_dict.keys()))
                 move_data = moves_dict[destination_square]
-
-                print('Selected destination square:', destination_square)
-                print('Move data:', move_data)
-
-                # Execute the move
                 self.movePiece(source_square, destination_square, move_data)
-
-                # Change the turn to the other player
-            else:
-                print('No valid moves available for the selected source square.')
-        else:
-            print('No valid moves available.')
 
         self.turn = 'player2'  # Assuming 'player1' is the other player
 
