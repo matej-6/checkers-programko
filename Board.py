@@ -1,11 +1,14 @@
+import random
+
 import pygame
 from Square import Square
 
 class Board:
-    def __init__(self, cols=8, rows=8, pocet_figuriek=8):
+    def __init__(self, cols=8, rows=8, pocet_figuriek=8, aiPlayer=False):
         self.COLS = cols
         self.ROWS = rows
         self.squares = []
+        self.aiPlayer = aiPlayer
         self.turn = 'player2'
         self.player1_left, self.player2_left = pocet_figuriek, pocet_figuriek
         self.changedSquares = []
@@ -16,6 +19,8 @@ class Board:
         self.player2_king_image = pygame.transform.scale(pygame.image.load('assets/images/kingBlackPiece.png'), (int(650 / self.ROWS), int(650 / self.ROWS)))
         self.initiateSquares()
         self.initiatePieces()
+        if self.aiPlayer:
+            print("AI is playing")
 
     def initiateSquares(self):
         for i in range(self.COLS):
@@ -68,6 +73,46 @@ class Board:
                 moves.update(self.traverse_top_left(square))
                 moves.update(self.traverse_top_right(square))
         return moves
+
+    def get_all_valid_moves(self):
+        moves = {}
+        for square in self.squares:
+            temp_moves = {}
+            if square.piece and square.piece.player == self.turn:
+                temp_moves.update(self.get_valid_moves(square))
+                if temp_moves:
+                    moves[square] = temp_moves
+        return moves
+
+    def ai_move(self):
+        valid_moves = self.get_all_valid_moves()
+        print(valid_moves)
+
+
+        if valid_moves:
+            # Select a random source square with a valid move
+            source_square, moves_dict = random.choice(list(valid_moves.items()))
+
+            print('Selected source square:', source_square)
+
+            # Select a random destination square from the possible moves
+            if moves_dict:
+                destination_square = random.choice(list(moves_dict.keys()))
+                move_data = moves_dict[destination_square]
+
+                print('Selected destination square:', destination_square)
+                print('Move data:', move_data)
+
+                # Execute the move
+                self.movePiece(source_square, destination_square, move_data)
+
+                # Change the turn to the other player
+            else:
+                print('No valid moves available for the selected source square.')
+        else:
+            print('No valid moves available.')
+
+        self.turn = 'player2'  # Assuming 'player1' is the other player
 
     def traverse_bottom_left(self, square, jumped=[]):
         moves = {}

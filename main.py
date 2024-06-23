@@ -128,7 +128,10 @@ class Game:
             self.clock.tick(FPS)
 
     def play(self, board_size, game_mode):
-        self.board = Board(board_size, board_size, board_size)
+        if(game_mode == "AI"):
+            self.board = Board(board_size, board_size, board_size, True)
+        else:
+            self.board = Board(board_size, board_size, board_size)
         self.running = True
         self.end_game = False
         self.winner = None
@@ -137,11 +140,13 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.type == pygame.MOUSEBUTTONDOWN and (self.board.turn == 'player2' or not self.board.aiPlayer):
                     pos = pygame.mouse.get_pos()
                     if not self.end_game:
                         square = self.board.find_square_by_pos(pos)
                         self.board.setSelected(square)
+            if self.board.aiPlayer and self.board.turn == 'player1' and not self.end_game:
+                self.board.ai_move()
 
             self.SCREEN.fill((0, 0, 0))
             if not self.end_game:
