@@ -17,7 +17,7 @@ class Piece:
         rect = piece_image.get_rect(center=(self.x, self.y))
         screen.blit(piece_image, rect)
         if self.selected:
-            pygame.draw.circle(screen, (255, 0, 0), (self.x, self.y), self.radius, 3)  # Red border for selected piece
+            pygame.draw.circle(screen, (255, 0, 0), (self.x, self.y), self.radius, 3)
 
     def __str__(self):
         return f"Piece at {self.x}, {self.y} with color {self.color} and player {self.player}"

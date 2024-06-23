@@ -127,10 +127,10 @@ class Game:
             self.clock.tick(FPS)
 
     def play(self, board_size, game_mode):
-        if(game_mode == "AI"):
-            self.board = Board(board_size, board_size, True)
+        if game_mode == "AI":
+            self.board = Board(cols=board_size, rows=board_size, aiPlayer=True)
         else:
-            self.board = Board(board_size, board_size)
+            self.board = Board(cols=board_size, rows=board_size)
         self.running = True
         self.end_game = False
         self.winner = None
@@ -158,32 +158,45 @@ class Game:
             pygame.display.flip()
             self.clock.tick(FPS)
         pygame.quit()
+        
     def win_screen(self):
         self.SCREEN.fill('#212529')
         MOUSE_POSITION = pygame.mouse.get_pos()
+        
         WIN_TEXT = get_font(100).render(f'{self.winner} wins!', True, (255, 255, 255))
         WIN_TEXT_RECT = WIN_TEXT.get_rect(center=(self.WIDTH // 2, 200))
         self.SCREEN.blit(WIN_TEXT, WIN_TEXT_RECT)
-        SCORE_TEXT = get_font(30).render(f'Score: Player 1 - {self.board.player1_left} | Player 2 - {self.board.player2_left}', True, (255, 255, 255))
+        
+        SCORE_TEXT = get_font(30).render(f'Remaining Pieces: Damian: {self.board.player1_left} | Martin: {self.board.player2_left}', True, (255, 255, 255))
         SCORE_TEXT_RECT = SCORE_TEXT.get_rect(center=(self.WIDTH // 2, 300))
         self.SCREEN.blit(SCORE_TEXT, SCORE_TEXT_RECT)
-        self.restart_button = Button((self.WIDTH // 2, 400), 'RESTART', get_font(50), 'white', '#4CAF50', '#343a40', '#ffffff')
-        self.main_menu_button = Button((self.WIDTH // 2, 500), 'MAIN MENU', get_font(50), 'white', '#f72585', '#343a40', '#ffffff')
-        self.restart_button.update(self.SCREEN)
-        self.main_menu_button.update(self.SCREEN)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                return
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.restart_button.checkForInput(MOUSE_POSITION):
-                    self.play(self.board.rows, self.selected_mode)
-                    return
-                elif self.main_menu_button.checkForInput(MOUSE_POSITION):
-                    self.main_menu()
-                    return
+        
+        restart_button = Button((self.WIDTH // 2, 400), 'RESTART', get_font(50), 'white', '#4CAF50', '#343a40', '#ffffff')
+        main_menu_button = Button((self.WIDTH // 2, 500), 'MAIN MENU', get_font(50), 'white', '#f72585', '#343a40', '#ffffff')
+        restart_button.update(self.SCREEN)
+        main_menu_button.update(self.SCREEN)
+        
         pygame.display.update()
-        self.clock.tick(FPS)
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    return
+                
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    MOUSE_POSITION = pygame.mouse.get_pos()
+                    if restart_button.checkForInput(MOUSE_POSITION):
+                        self.play(self.board.COLS, self.selected_mode)
+                        return
+                    elif main_menu_button.checkForInput(MOUSE_POSITION):
+                        self.main_menu()
+                        return
+
+            pygame.display.update()
+            self.clock.tick(FPS)
+
+
 
 
 if __name__ == '__main__':
