@@ -113,10 +113,10 @@ class Game:
                                 self.selected_mode_button.selected = False
                             button.selected = True
                             self.selected_mode_button = button
-                            if button.text == '2P':
-                                self.selected_mode = '2P'
-                            elif button.text == 'AI':
+                            if button.text == 'AI':
                                 self.selected_mode = 'AI'
+                            else:
+                                self.selected_mode = '2P'
 
                     if start_button.rect.collidepoint(MOUSE_POSITION):
                         if hasattr(self, 'selected_size') and hasattr(self, 'selected_mode'):
@@ -130,7 +130,7 @@ class Game:
         if(game_mode == "AI"):
             self.board = Board(board_size, board_size, True)
         else:
-            self.board = Board(board_size, board_size, board_size)
+            self.board = Board(board_size, board_size)
         self.running = True
         self.end_game = False
         self.winner = None
