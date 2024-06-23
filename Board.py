@@ -4,8 +4,7 @@ import pygame
 from Square import Square
 
 class Board:
-    def __init__(self, cols=8, rows=8):
-    def __init__(self, cols=8, rows=8, pocet_figuriek=8, aiPlayer=False):
+    def __init__(self, cols=8, rows=8, aiPlayer=False):
         self.COLS = cols
         self.ROWS = rows
         self.squares = []
